@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "790166523239",
+    "project_id": "literacy-learning-app",
+    "storage_bucket": "literacy-learning-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790166523239:android:791d00d4c0912dfab5b3c2",
+        "android_client_info": {
+          "package_name": "edu.fandm.atalgatk.quiz2day"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ-N9xS0HjLN0STfPGnZssCzUadC4jwsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
