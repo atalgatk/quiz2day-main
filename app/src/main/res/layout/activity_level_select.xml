@@ -6,13 +6,6 @@
     android:padding="24dp"
     android:background="#FAF8F0">
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@android:drawable/ic_menu_revert" android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Go back"
-        android:layout_marginBottom="32dp"/>
 
     <TextView
         android:id="@+id/tvSelectLevel"

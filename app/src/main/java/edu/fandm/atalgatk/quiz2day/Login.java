@@ -45,7 +45,7 @@ public class Login extends AppCompatActivity {
         FirebaseUser user = fba.getCurrentUser();
         if (user != null) {
 //          go to the next page
-            Intent i = new Intent(Login.this, );
+            Intent i = new Intent(Login.this, LevelSelect.class);
             String UID = user.getUid();
             i.putExtra("user_id",UID);
             startActivity(i);
@@ -81,7 +81,7 @@ public class Login extends AppCompatActivity {
                     FirebaseUser user = fba.getCurrentUser();
                     Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
 
-                    Intent i = new Intent(Login.this, );
+                    Intent i = new Intent(Login.this, LevelSelect.class);
                     String UID = user.getUid();
                     i.putExtra("user_id",UID);
                     startActivity(i);
