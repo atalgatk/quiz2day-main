@@ -49,4 +49,9 @@ public class SubjectSelection extends AppCompatActivity {
         startActivity(i);
     }
 
+    @Override
+    public boolean onSupportNavigateUp(){
+        getOnBackPressedDispatcher().onBackPressed();
+        return true;
+    }
 }

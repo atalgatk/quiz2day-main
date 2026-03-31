@@ -128,4 +128,10 @@ public class Questions extends AppCompatActivity {
             btnD.setBackgroundTintList(wrongColor);
     }
 
+    @Override
+    public boolean onSupportNavigateUp(){
+        getOnBackPressedDispatcher().onBackPressed();
+        return true;
+    }
+
 }

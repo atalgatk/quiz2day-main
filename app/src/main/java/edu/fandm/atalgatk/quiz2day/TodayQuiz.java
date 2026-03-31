@@ -101,4 +101,10 @@ public class TodayQuiz extends AppCompatActivity {
             dot.setBackgroundColor(Color.parseColor("#888888")); // Gray for Incomplete
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        getOnBackPressedDispatcher().onBackPressed();
+        return true;
+    }
 }

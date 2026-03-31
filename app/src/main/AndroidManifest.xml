@@ -13,13 +13,19 @@
         android:theme="@style/Theme.Quiz2day">
         <activity
             android:name=".Questions"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".SubjectSelection"/>
         <activity
             android:name=".SubjectSelection"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".TodayQuiz"/>
         <activity
             android:name=".Login"
             android:exported="false" />
+        <activity
+            android:name=".TodayQuiz"
+            android:exported="false"
+            android:parentActivityName=".LevelSelect"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
