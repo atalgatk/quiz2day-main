@@ -17,7 +17,6 @@
             android:layout_height="40dp"
             android:src ="@drawable/back"
             android:scaleType="centerCrop"
-
             android:background="@android:color/transparent" />
 
     </LinearLayout>
