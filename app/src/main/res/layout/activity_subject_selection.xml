@@ -10,8 +10,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:gravity="center" >
+        android:padding="20dp"
+        android:gravity="center_horizontal"
+        android:elevation="4dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -22,7 +23,7 @@
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
 
-        <!-- Subtitle -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,45 +31,54 @@
             android:textSize="25sp"
             android:layout_marginBottom="30dp"/>
 
-        <!-- Buttons -->
-        <Button
-            android:id="@+id/english_button"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="English"
-            android:backgroundTint="#0956a4"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            android:padding="20dp"
+            android:background="@drawable/card_border_bg"
+            android:elevation="4dp" >
 
-        <Button
-            android:id="@+id/math_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Math"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:backgroundTint="#ffc41a"
-            android:layout_marginBottom="12dp"/>
+            <Button
+                android:id="@+id/english_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="English"
+                android:backgroundTint="#0956a4"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"/>
 
-        <Button
-            android:id="@+id/science_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Science"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:backgroundTint="#168a35"
-            android:layout_marginBottom="12dp"/>
+            <Button
+                android:id="@+id/math_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Math"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:backgroundTint="#ffc41a"
+                android:layout_marginBottom="12dp"/>
 
-        <Button
-            android:id="@+id/ss_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:backgroundTint="#ec2328"
-            android:text="Social Studies" />
+            <Button
+                android:id="@+id/science_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Science"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:backgroundTint="#168a35"
+                android:layout_marginBottom="12dp"/>
+
+            <Button
+                android:id="@+id/ss_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:backgroundTint="#ec2328"
+                android:text="Social Studies" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
