@@ -71,7 +71,7 @@ public class Questions extends AppCompatActivity {
 
                 //go to why (explanation) screen
                 new android.os.Handler().postDelayed(() -> {
-                    Intent i = new Intent(this, WhyActivity.class);
+                    Intent i = new Intent(this, Explanation.class);
                     startActivity(i);
                 }, 800);
             }else{
