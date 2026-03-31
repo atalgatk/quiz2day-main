@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Quiz2day">
         <activity
+            android:name=".Questions"
+            android:exported="false" />
+        <activity
             android:name=".SubjectSelection"
             android:exported="false" />
         <activity
