@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Button website = findViewById(R.id.btnMoreAboutUs);
         website.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://yourwebsite.com")); // 👈 PUT YOUR REAL LINK HERE
+            intent.setData(Uri.parse("https://literacysuccess.org/"));
             startActivity(intent);
         });
 
