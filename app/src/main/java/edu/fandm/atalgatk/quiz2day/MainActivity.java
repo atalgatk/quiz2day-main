@@ -1,6 +1,7 @@
 package edu.fandm.atalgatk.quiz2day;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,5 +27,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button b = findViewById(R.id.btnWhereWeAre);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri loc = Uri.parse("geo:40.0368308,-76.3121635?q=The+Literacy+Council+of+Lancaster-Lebanon");
+                Intent i = new Intent(Intent.ACTION_VIEW, loc);
+                startActivity(i);
+            }
+        });
+
+        Button website = findViewById(R.id.btnMoreAboutUs);
+        website.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://yourwebsite.com")); // 👈 PUT YOUR REAL LINK HERE
+            startActivity(intent);
+        });
+
     }
 }
