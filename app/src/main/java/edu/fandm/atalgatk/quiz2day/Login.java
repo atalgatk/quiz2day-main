@@ -105,7 +105,7 @@ public class Login extends AppCompatActivity {
                     FirebaseUser user = fba.getCurrentUser(); // we're now logged in immediately!
                     Toast.makeText(getApplicationContext(), "New User Created!", Toast.LENGTH_SHORT).show();
 
-                    Intent i = new Intent(Login.this, );
+                    Intent i = new Intent(Login.this, LevelSelect.class);
                     String UID = user.getUid();
                     i.putExtra("user_id",UID);
                     startActivity(i);
