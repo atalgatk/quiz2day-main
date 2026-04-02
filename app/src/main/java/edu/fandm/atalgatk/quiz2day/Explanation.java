@@ -20,7 +20,6 @@ public class Explanation extends AppCompatActivity {
         // Initialize UI elements from the XML layout
         tvCorrectAnswer = findViewById(R.id.tvCorrectAnswer);
         tvExplanation = findViewById(R.id.tvExplanation);
-        backButton = findViewById(R.id.back_button_explanation);
         btnContinue = findViewById(R.id.btnDone);
 
         // 1. Retrieve data passed from the Questions activity

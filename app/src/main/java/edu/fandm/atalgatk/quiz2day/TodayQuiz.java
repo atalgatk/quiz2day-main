@@ -67,7 +67,7 @@ public class TodayQuiz extends AppCompatActivity {
         boolean sciDone = ProgressManager.isSubjectDone(this, "Science");
         boolean socDone = ProgressManager.isSubjectDone(this, "Social Studies");
 
-        // 🔥 СНАЧАЛА проверяем пропуск дня
+        // check for missing day
         if (StreakManager.hasMissedDay(this)) {
             StreakManager.resetStreak(this);
         }
@@ -86,13 +86,13 @@ public class TodayQuiz extends AppCompatActivity {
                 StreakManager.markTodayCompleted(this);
             }
 
-            // 🔥 активный
+            // streak is active
             ivStreakIcon.setColorFilter(null);
             ivStreakIcon.setAlpha(1.0f);
             tvStreak.setTextColor(Color.BLACK);
 
         } else {
-            // ⚪ серый
+            //gray color streak
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
             ivStreakIcon.setColorFilter(new ColorMatrixColorFilter(matrix));
