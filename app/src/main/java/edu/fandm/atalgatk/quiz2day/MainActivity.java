@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri loc = Uri.parse("geo:40.0368308,-76.3121635?q=The+Literacy+Council+of+Lancaster-Lebanon");
+                Uri loc = Uri.parse("https://www.google.com/maps/place/The+Literacy+Council+of+Lancaster-Lebanon/@40.0368308,-76.3121635,17z/data=!3m1!4b1!4m6!3m5!1s0x89c624f21949c7b1:0xcb73af00c60886b7!8m2!3d40.0368308!4d-76.3121635!16s%2Fg%2F1tplr88_?entry=ttu&g_ep=EgoyMDI2MDMzMS4wIKXMDSoASAFQAw%3D%3D");
                 Intent i = new Intent(Intent.ACTION_VIEW, loc);
                 startActivity(i);
             }
