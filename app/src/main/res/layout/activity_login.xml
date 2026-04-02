@@ -16,7 +16,7 @@
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteY="51dp" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/etEmail"
         android:layout_width="302dp"
         app:layout_constraintLeft_toLeftOf="parent"

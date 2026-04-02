@@ -3,9 +3,12 @@ package edu.fandm.atalgatk.quiz2day;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,99 +26,129 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Login extends AppCompatActivity {
+
+    // Member variables (Class level)
     private FirebaseAuth fba;
+    private SharedPreferences prefs;
+    private AutoCompleteTextView emailAutocomplete;
+    private EditText passwordField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        Button login = findViewById(R.id.btnLogin);
-        Button register = findViewById(R.id.btnRegister);
-
-        fba = FirebaseAuth.getInstance();
-
-        FirebaseUser user = fba.getCurrentUser();
-        if (user != null) {
-//          go to the next page
-            Intent i = new Intent(Login.this, LevelSelect.class);
-            String UID = user.getUid();
-            i.putExtra("user_id",UID);
-            startActivity(i);
-            finish();
+        // Handle Window Insets for Edge-to-Edge
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
         }
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = ((EditText) findViewById(R.id.etEmail)).getText().toString().trim();
-                String password = ((EditText) findViewById(R.id.etPassword)).getText().toString().trim();
+        // 1. Initialize SharedPreferences (Assigning to the class-level variable)
+        prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+
+        // 2. Initialize Views
+        emailAutocomplete = findViewById(R.id.etEmail);
+        passwordField = findViewById(R.id.etPassword);
+        Button loginBtn = findViewById(R.id.btnLogin);
+        Button registerBtn = findViewById(R.id.btnRegister);
+
+        // 3. Setup Autocomplete Logic
+        setupEmailAutocomplete();
+
+        // 4. Initialize Firebase
+        fba = FirebaseAuth.getInstance();
+
+        // 5. Check if user is already logged in
+        FirebaseUser currentUser = fba.getCurrentUser();
+        if (currentUser != null) {
+            navigateToLevelSelect(currentUser.getUid());
+        }
+
+        // 6. Click Listeners
+        loginBtn.setOnClickListener(v -> {
+            String email = emailAutocomplete.getText().toString().trim();
+            String password = passwordField.getText().toString().trim();
+            if (!email.isEmpty() && !password.isEmpty()) {
                 signIn(email, password);
+            } else {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
         });
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = ((EditText) findViewById(R.id.etEmail)).getText().toString().trim();
-                String password = ((EditText) findViewById(R.id.etPassword)).getText().toString().trim();
+        registerBtn.setOnClickListener(v -> {
+            String email = emailAutocomplete.getText().toString().trim();
+            String password = passwordField.getText().toString().trim();
+            if (!email.isEmpty() && !password.isEmpty()) {
                 registerNewUser(email, password);
+            } else {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private void setupEmailAutocomplete() {
+        String lastEmail = prefs.getString("last_email", "");
+        List<String> suggestions = new ArrayList<>();
+        if (!lastEmail.isEmpty()) {
+            suggestions.add(lastEmail);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                suggestions);
+
+        emailAutocomplete.setAdapter(adapter);
+    }
 
     private void signIn(String email, String password) {
-        Task s = fba.signInWithEmailAndPassword(email, password);
-        s.addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(Task task) {
-                if (task.isSuccessful()) {
-                    FirebaseUser user = fba.getCurrentUser();
-                    Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
-
-                    Intent i = new Intent(Login.this, LevelSelect.class);
-                    String UID = user.getUid();
-                    i.putExtra("user_id",UID);
-                    startActivity(i);
-                    finish();
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "Login Failed :(. Please try again.", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        fba.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        saveEmailToPrefs(email);
+                        Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                        navigateToLevelSelect(fba.getCurrentUser().getUid());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Login Failed. Please try again.", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     private void registerNewUser(String email, String password) {
-        Task<AuthResult> task = fba.createUserWithEmailAndPassword(email,
-                password);
-        task.addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(Task task) {
-                Log.d(TAG, "task: " + task);
-                if (task.isSuccessful()) {
-                    FirebaseUser user = fba.getCurrentUser(); // we're now logged in immediately!
-                    Toast.makeText(getApplicationContext(), "New User Created!", Toast.LENGTH_SHORT).show();
-
-                    Intent i = new Intent(Login.this, LevelSelect.class);
-                    String UID = user.getUid();
-                    i.putExtra("user_id",UID);
-                    startActivity(i);
-                    finish();
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "Registration Failed. Please try again :(", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        fba.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        saveEmailToPrefs(email);
+                        Toast.makeText(getApplicationContext(), "New User Created!", Toast.LENGTH_SHORT).show();
+                        navigateToLevelSelect(fba.getCurrentUser().getUid());
+                    } else {
+                        Log.e(TAG, "Registration failed", task.getException());
+                        Toast.makeText(getApplicationContext(), "Registration Failed.", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
+    private void saveEmailToPrefs(String email) {
+        // Correctly using the class-level 'prefs' object
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("last_email", email);
+        editor.apply();
+    }
+
+    private void navigateToLevelSelect(String uid) {
+        Intent i = new Intent(Login.this, LevelSelect.class);
+        i.putExtra("user_id", uid);
+        startActivity(i);
+        finish();
+    }
 }
