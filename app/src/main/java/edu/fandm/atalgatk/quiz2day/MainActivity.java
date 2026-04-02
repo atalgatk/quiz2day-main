@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Navigate to the next screen (e.g., Login or Select Level)
                 // Assuming it goes to SelectLevelActivity for this example
-                Intent intent = new Intent(MainActivity.this, SelectLevelActivity.class);
+                Intent intent = new Intent(MainActivity.this, LevelSelect.class);
                 startActivity(intent);
             }
         });
