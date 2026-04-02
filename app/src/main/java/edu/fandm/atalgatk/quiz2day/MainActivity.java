@@ -21,9 +21,8 @@ public class MainActivity extends AppCompatActivity {
         btnGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to the next screen (e.g., Login or Select Level)
-                // Assuming it goes to SelectLevelActivity for this example
-                Intent intent = new Intent(MainActivity.this, LevelSelect.class);
+                // Updated to navigate to the Login activity
+                Intent intent = new Intent(MainActivity.this, Login.class);
                 startActivity(intent);
             }
         });
