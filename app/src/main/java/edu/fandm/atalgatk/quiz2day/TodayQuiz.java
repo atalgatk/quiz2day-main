@@ -2,6 +2,8 @@ package edu.fandm.atalgatk.quiz2day;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
@@ -13,12 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class TodayQuiz extends AppCompatActivity {
 
-    // UI elements for the dashboard
-    private TextView tvStreak, backButton;
+
+    private TextView tvStreak;
     private Button btnStartQuiz;
     private ImageView ivStreakIcon;
 
-    // View objects for the four progress indicators (dots)
     private View dotEnglish, dotMath, dotScience, dotSocial;
 
     @Override
@@ -26,79 +27,88 @@ public class TodayQuiz extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.today_quiz);
 
-        // Linking Java objects to XML layout IDs
+        //initialization
         tvStreak = findViewById(R.id.tvStreak);
-        backButton = findViewById(R.id.back_button);
-        btnStartQuiz = findViewById(R.id.btnStartQuiz);
         ivStreakIcon = findViewById(R.id.ivStreakIcon);
+        btnStartQuiz = findViewById(R.id.btnStartQuiz);
 
         dotEnglish = findViewById(R.id.dot_english);
         dotMath = findViewById(R.id.dot_math);
         dotScience = findViewById(R.id.dot_science);
         dotSocial = findViewById(R.id.dot_social);
 
-        // Closes the current activity when the back button is clicked
-        backButton.setOnClickListener(v -> finish());
-
-        // Navigates to the Subject Selection screen when the start button is clicked
+        //switching to SubjectSelection.class
         btnStartQuiz.setOnClickListener(v -> {
             Intent intent = new Intent(TodayQuiz.this, SubjectSelection.class);
             startActivity(intent);
         });
 
-        // Initial UI update when the screen is first created
         updateUI();
+
+        //to check if the code is working
+
+        //ProgressManager.setSubjectDone(this, "English");
+        //ProgressManager.setSubjectDone(this, "Math");
+        //ProgressManager.setSubjectDone(this, "Science");
+        //ProgressManager.setSubjectDone(this, "Social Studies");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh the UI every time the user returns to this screen (e.g., after finishing a quiz)
+        //we update the screen all the time when the user comes back
         updateUI();
     }
 
-    /**
-     * Updates the streak count, progress dots, and the streak icon color
-     */
     private void updateUI() {
-        // Fetch and display the current user streak from the StreakManager
-        int streak = StreakManager.getStreak(this);
-        tvStreak.setText(String.valueOf(streak));
 
-        // Check completion status for each subject from the ProgressManager
         boolean engDone = ProgressManager.isSubjectDone(this, "English");
         boolean mathDone = ProgressManager.isSubjectDone(this, "Math");
         boolean sciDone = ProgressManager.isSubjectDone(this, "Science");
         boolean socDone = ProgressManager.isSubjectDone(this, "Social Studies");
 
-        // Update the visual color of each progress dot based on completion
+        // 🔥 СНАЧАЛА проверяем пропуск дня
+        if (StreakManager.hasMissedDay(this)) {
+            StreakManager.resetStreak(this);
+        }
+
         setDotStatus(dotEnglish, engDone);
         setDotStatus(dotMath, mathDone);
         setDotStatus(dotScience, sciDone);
         setDotStatus(dotSocial, socDone);
 
-        // Logic for the Daily Goal: If all subjects are done, light up the streak icon
-        if (engDone && mathDone && sciDone && socDone) {
-            // Remove the gray filter to show original icon colors (Daily Dose complete)
-            ivStreakIcon.clearColorFilter();
+        boolean allDone = engDone && mathDone && sciDone && socDone;
+
+        if (allDone) {
+
+            if (!StreakManager.isTodayCompleted(this)) {
+                StreakManager.incrementStreak(this);
+                StreakManager.markTodayCompleted(this);
+            }
+
+            // 🔥 активный
+            ivStreakIcon.setColorFilter(null);
+            ivStreakIcon.setAlpha(1.0f);
             tvStreak.setTextColor(Color.BLACK);
+
         } else {
-            // Apply a gray filter if the daily goal is not yet met
-            ivStreakIcon.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            // ⚪ серый
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ivStreakIcon.setColorFilter(new ColorMatrixColorFilter(matrix));
+            ivStreakIcon.setAlpha(0.5f);
             tvStreak.setTextColor(Color.GRAY);
         }
+
+        int streak = StreakManager.getStreak(this);
+        tvStreak.setText(String.valueOf(streak));
     }
 
-    /**
-     * Changes the background color of a progress dot
-     * @param dot The View to change
-     * @param isDone Whether the subject is completed
-     */
     private void setDotStatus(View dot, boolean isDone) {
-        if (isDone) {
-            dot.setBackgroundColor(Color.parseColor("#4CAF50")); // Green for Completed
-        } else {
-            dot.setBackgroundColor(Color.parseColor("#888888")); // Gray for Incomplete
+        //make dots green if it's done and gray if not
+        int color = isDone ? Color.parseColor("#4CAF50") : Color.parseColor("#D1D5DB");
+        if (dot != null && dot.getBackground() != null) {
+            dot.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
     }
 

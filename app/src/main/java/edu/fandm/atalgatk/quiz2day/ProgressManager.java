@@ -23,4 +23,6 @@ public class ProgressManager {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         prefs.edit().clear().apply();
     }
+
+
 }
