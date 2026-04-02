@@ -37,8 +37,8 @@ public class SubjectSelection extends AppCompatActivity {
         Button ss = findViewById(R.id.ss_button);
         ss.setOnClickListener(v->openQuestion("Social Studies"));
 
-        ImageButton back = findViewById(R.id.back_button);
-        back.setOnClickListener(v->finish());
+        //ImageButton back = findViewById(R.id.back_button);
+        //back.setOnClickListener(v->finish());
     }
 
 
