@@ -1,5 +1,6 @@
 package edu.fandm.atalgatk.quiz2day;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
@@ -43,14 +44,14 @@ public class Explanation extends AppCompatActivity {
             ProgressManager.setSubjectDone(this, subject);
         }
 
-        // Handle the Back button click (top left)
-        backButton.setOnClickListener(v -> finish());
-
         // Handle the Continue button click (bottom)
         // This takes the user back to the Home Dashboard
         btnContinue.setOnClickListener(v -> {
             // finish() closes this screen and returns the user to the previous one
             // If you want to jump directly to TodayQuiz, you could use an Intent here
+            Intent intent = new Intent(Explanation.this, TodayQuiz.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Очистить стек, чтобы вернуться "домой"
+            startActivity(intent);
             finish();
         });
     }
