@@ -24,6 +24,14 @@
             android:layout_marginBottom="20dp"
             android:layout_gravity="center"/>
 
+        <ImageView
+            android:id="@+id/questionImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:layout_marginBottom="20dp"/>
+
         <!-- Question -->
         <TextView
             android:id="@+id/questionText"
