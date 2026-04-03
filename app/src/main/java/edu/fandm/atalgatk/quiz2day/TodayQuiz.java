@@ -1,6 +1,7 @@
 package edu.fandm.atalgatk.quiz2day;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -16,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class TodayQuiz extends AppCompatActivity {
 
 
-    private TextView tvStreak;
+    private TextView tvStreak, tvUserLevel;
     private Button btnStartQuiz;
     private ImageView ivStreakIcon;
 
@@ -29,6 +30,7 @@ public class TodayQuiz extends AppCompatActivity {
 
         //initialization
         tvStreak = findViewById(R.id.tvStreak);
+        tvUserLevel = findViewById(R.id.tvUserLevel);
         ivStreakIcon = findViewById(R.id.ivStreakIcon);
         btnStartQuiz = findViewById(R.id.btnStartQuiz);
 
@@ -62,6 +64,13 @@ public class TodayQuiz extends AppCompatActivity {
 
     private void updateUI() {
 
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String level = prefs.getString("selected_level", "NOT SELECTED");
+
+        if (tvUserLevel != null) {
+            tvUserLevel.setText("YOUR LEVEL IS: " + level);
+        }
+
         boolean engDone = ProgressManager.isSubjectDone(this, "English");
         boolean mathDone = ProgressManager.isSubjectDone(this, "Math");
         boolean sciDone = ProgressManager.isSubjectDone(this, "Science");
@@ -80,19 +89,18 @@ public class TodayQuiz extends AppCompatActivity {
         boolean allDone = engDone && mathDone && sciDone && socDone;
 
         if (allDone) {
-
+            //if all tests are done today
             if (!StreakManager.isTodayCompleted(this)) {
                 StreakManager.incrementStreak(this);
                 StreakManager.markTodayCompleted(this);
             }
 
-            // streak is active
+            //we do the icon colorful - means it is active
             ivStreakIcon.setColorFilter(null);
             ivStreakIcon.setAlpha(1.0f);
             tvStreak.setTextColor(Color.BLACK);
-
         } else {
-            //gray color streak
+            //do the icon gray - not active, if the plan is not done
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
             ivStreakIcon.setColorFilter(new ColorMatrixColorFilter(matrix));
@@ -100,6 +108,7 @@ public class TodayQuiz extends AppCompatActivity {
             tvStreak.setTextColor(Color.GRAY);
         }
 
+        //update the # of our streak on the screen
         int streak = StreakManager.getStreak(this);
         tvStreak.setText(String.valueOf(streak));
     }
