@@ -72,11 +72,13 @@ public class Questions extends AppCompatActivity {
         //getting data from previous screen
         String subject = getIntent().getStringExtra("subject");
         String level = getIntent().getStringExtra("level");
-        subjectTitle.setText(subject);
 
         //fallback to prevent crashing
         if (subject == null ) subject = "Math";
         if (level == null) level = "ESL-1";
+
+        //setting subject
+        subjectTitle.setText(subject);
 
         //loading question from FIRESTORE
         db.collection("Qbank")
