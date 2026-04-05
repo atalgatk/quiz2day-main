@@ -30,6 +30,7 @@ public class Questions extends AppCompatActivity {
     TextView questionText;
     ImageView questionImage;
     String explanationText ="";
+    TextView subjectTitle;
 
     FirebaseFirestore db;
 
@@ -57,6 +58,7 @@ public class Questions extends AppCompatActivity {
         //question +img
         questionText = findViewById(R.id.questionText);
         questionImage = findViewById(R.id.questionImage);
+        subjectTitle = findViewById(R.id.subjectTitle);
 
         //defining my colors
         defaultColor = ColorStateList.valueOf(Color.parseColor("#3E3D53")); //original gray
@@ -70,13 +72,14 @@ public class Questions extends AppCompatActivity {
         //getting data from previous screen
         String subject = getIntent().getStringExtra("subject");
         String level = getIntent().getStringExtra("level");
+        subjectTitle.setText(subject);
 
         //fallback to prevent crashing
         if (subject == null ) subject = "Math";
-        if (level == null) level = "ESL1";
+        if (level == null) level = "ESL-1";
 
         //loading question from FIRESTORE
-        db.collection("questions")
+        db.collection("Qbank")
                 .whereEqualTo("Category", subject)
                 .whereEqualTo("Level", level)
                 .get()
@@ -103,7 +106,12 @@ public class Questions extends AppCompatActivity {
                             btnD.setText(doc.getString("D"));
 
                             // SET CORRECT ANSWER
-                            correctAnswer = doc.getString("Answer");
+                            String answerKey = doc.getString("Answer");
+
+                            if (answerKey.equals("A")) correctAnswer = doc.getString("A");
+                            else if (answerKey.equals("B")) correctAnswer = doc.getString("B");
+                            else if (answerKey.equals("C")) correctAnswer = doc.getString("C");
+                            else if (answerKey.equals("D")) correctAnswer = doc.getString("D");
 
                             // SET EXPLANATION
                             explanationText = doc.getString("Why");
