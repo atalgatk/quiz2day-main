@@ -66,6 +66,13 @@ public class LevelSelect extends AppCompatActivity {
                 // Store the chosen level in our variable
                 selectedLevel = levels[which];
 
+                // Save the selected level to SharedPreferences
+                getSharedPreferences("UserPrefs", MODE_PRIVATE)
+                        .edit()
+                        .putString("selected_level", selectedLevel)
+                        .apply();
+
+
                 // Create an Intent to navigate to TodayQuiz
                 Intent intent = new Intent(LevelSelect.this, TodayQuiz.class);
 
