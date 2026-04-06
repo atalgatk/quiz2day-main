@@ -23,6 +23,7 @@ public class TodayQuiz extends AppCompatActivity {
 
     private View dotEnglish, dotMath, dotScience, dotSocial;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

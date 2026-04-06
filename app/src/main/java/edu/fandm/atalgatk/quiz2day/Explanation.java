@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Explanation extends AppCompatActivity {
 
-    private TextView tvCorrectAnswer, tvExplanation, backButton;
+    private TextView tvCorrectAnswer, tvExplanation;
     private Button btnContinue;
 
     @Override
