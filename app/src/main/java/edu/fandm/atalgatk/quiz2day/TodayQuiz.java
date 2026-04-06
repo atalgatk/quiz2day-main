@@ -93,7 +93,7 @@ public class TodayQuiz extends AppCompatActivity {
             //сall the method to increment the streak by +1 if it hasn't been updated today
             StreakManager.isTodayCompleted(this);
 
-            // Делаем иконку цветной
+            // do the icon colorful
             ivStreakIcon.setColorFilter(null);
             ivStreakIcon.setAlpha(1.0f);
             tvStreak.setTextColor(Color.BLACK);
