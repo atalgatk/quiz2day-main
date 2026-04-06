@@ -48,12 +48,6 @@ public class TodayQuiz extends AppCompatActivity {
 
         updateUI();
 
-        //to check if the code is working
-
-        //ProgressManager.setSubjectDone(this, "English");
-        //ProgressManager.setSubjectDone(this, "Math");
-        //ProgressManager.setSubjectDone(this, "Science");
-        //ProgressManager.setSubjectDone(this, "Social Studies");
     }
 
     @Override

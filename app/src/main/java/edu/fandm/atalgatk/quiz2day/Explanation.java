@@ -49,8 +49,17 @@ public class Explanation extends AppCompatActivity {
         btnContinue.setOnClickListener(v -> {
             // finish() closes this screen and returns the user to the previous one
             // If you want to jump directly to TodayQuiz, you could use an Intent here
+            boolean engDone = ProgressManager.isSubjectDone(this, "English");
+            boolean matDone = ProgressManager.isSubjectDone(this, "Math");
+            boolean sciDone = ProgressManager.isSubjectDone(this, "Science");
+            boolean socDone = ProgressManager.isSubjectDone(this, "Social Studies");
+
+            boolean allDone = engDone && matDone && sciDone && socDone;
+
+            //if all subjects are done, navigate to TodayQuiz
+            if (allDone) {
             Intent intent = new Intent(Explanation.this, TodayQuiz.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Очистить стек, чтобы вернуться "домой"
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
         });
