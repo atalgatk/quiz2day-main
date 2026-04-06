@@ -79,7 +79,11 @@ public class Login extends AppCompatActivity {
             String email = emailAutocomplete.getText().toString().trim();
             String password = passwordField.getText().toString().trim();
             if (!email.isEmpty() && !password.isEmpty()) {
-                signIn(email, password);
+                if(password.length()>= 6){
+                    signIn(email, password);
+                }else {
+                    Toast.makeText(this, "Incorrect Password", Toast.LENGTH_LONG).show();
+                }
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
@@ -90,6 +94,11 @@ public class Login extends AppCompatActivity {
             String password = passwordField.getText().toString().trim();
             if (!email.isEmpty() && !password.isEmpty()) {
                 registerNewUser(email, password);
+                if(password.length()>= 6){
+                    signIn(email, password);
+                }else {
+                    Toast.makeText(this, "Password must be at least 6 characters ", Toast.LENGTH_LONG).show();
+                }
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
