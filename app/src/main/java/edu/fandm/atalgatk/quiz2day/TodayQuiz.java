@@ -90,18 +90,15 @@ public class TodayQuiz extends AppCompatActivity {
         boolean allDone = engDone && mathDone && sciDone && socDone;
 
         if (allDone) {
-            //if all tests are done today
-            if (!StreakManager.isTodayCompleted(this)) {
-                StreakManager.incrementStreak(this);
-                StreakManager.markTodayCompleted(this);
-            }
+            //сall the method to increment the streak by +1 if it hasn't been updated today
+            StreakManager.isTodayCompleted(this);
 
-            //we do the icon colorful - means it is active
+            // Делаем иконку цветной
             ivStreakIcon.setColorFilter(null);
             ivStreakIcon.setAlpha(1.0f);
             tvStreak.setTextColor(Color.BLACK);
         } else {
-            //do the icon gray - not active, if the plan is not done
+            //gray out the icon if not all subjects are completed
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
             ivStreakIcon.setColorFilter(new ColorMatrixColorFilter(matrix));
