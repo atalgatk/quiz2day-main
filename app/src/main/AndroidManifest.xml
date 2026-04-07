@@ -17,35 +17,42 @@
 
         <activity
             android:name=".LevelSelect"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".Questions"
             android:exported="false"
-            android:parentActivityName=".SubjectSelection"/>
+            android:parentActivityName=".SubjectSelection"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".SubjectSelection"
             android:exported="false"
-            android:parentActivityName=".TodayQuiz"/>
+            android:parentActivityName=".TodayQuiz"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".Login"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".TodayQuiz"
             android:exported="false"
-            android:parentActivityName=".LevelSelect"/>
+            android:parentActivityName=".LevelSelect"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".Explanation"
             android:exported="false"
-            android:parentActivityName=".Questions"/>
+            android:parentActivityName=".Questions"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
