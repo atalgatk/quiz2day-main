@@ -39,6 +39,11 @@
             android:parentActivityName=".LevelSelect"/>
 
         <activity
+            android:name=".Explanation"
+            android:exported="false"
+            android:parentActivityName=".Questions"/>
+
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
