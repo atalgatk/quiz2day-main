@@ -28,10 +28,14 @@ public class Questions extends AppCompatActivity {
     Button btnA, btnB, btnC, btnD, submit;
     String selectedAnswer ="";
     String correctAnswer ="";
+    String subject = "";
 
     TextView questionText;
     ImageView questionImage;
     String explanationText ="";
+
+
+
     TextView subjectTitle;
 
     FirebaseFirestore db;
@@ -72,7 +76,7 @@ public class Questions extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         //getting data from previous screen
-        String subject = getIntent().getStringExtra("subject");
+        subject = getIntent().getStringExtra("subject");
         String level = getIntent().getStringExtra("level");
 
         //fallback to prevent crashing
@@ -123,10 +127,11 @@ public class Questions extends AppCompatActivity {
                             // HANDLE IMAGE
                             String imageUrl = doc.getString("img");
 
-                            if (imageUrl != null && !imageUrl.isEmpty()) {
+                            if (imageUrl != null && !imageUrl.trim().isEmpty()) {
                                 questionImage.setVisibility(View.VISIBLE);
                                 Picasso.get().load(imageUrl).into(questionImage);
                             } else {
+                                questionImage.setImageDrawable(null);
                                 questionImage.setVisibility(View.GONE);
                             }
 
@@ -162,6 +167,8 @@ public class Questions extends AppCompatActivity {
                     Intent i = new Intent(this, Explanation.class);
                     i.putExtra("explanation", explanationText);
                     i.putExtra("answer", correctAnswer);
+                    i.putExtra("subject", subject);
+
                     startActivity(i);
                 }, 500);
             }else{
