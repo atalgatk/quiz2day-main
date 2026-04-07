@@ -46,9 +46,9 @@ public class Explanation extends AppCompatActivity {
 
         // Handle the Continue button click (bottom)
         // This takes the user back to the Home Dashboard
+        // Handle the Continue button click (bottom)
         btnContinue.setOnClickListener(v -> {
-            // finish() closes this screen and returns the user to the previous one
-            // If you want to jump directly to TodayQuiz, you could use an Intent here
+            //check the progress
             boolean engDone = ProgressManager.isSubjectDone(this, "English");
             boolean matDone = ProgressManager.isSubjectDone(this, "Math");
             boolean sciDone = ProgressManager.isSubjectDone(this, "Science");
@@ -56,9 +56,10 @@ public class Explanation extends AppCompatActivity {
 
             boolean allDone = engDone && matDone && sciDone && socDone;
 
-            //if all subjects are done, navigate to TodayQuiz
-            if (allDone) {
+            //we switch to the TodayQUiz
             Intent intent = new Intent(Explanation.this, TodayQuiz.class);
+            // FLAG_ACTIVITY_CLEAR_TOP will close  all old question screens
+            // FLAG_ACTIVITY_SINGLE_TOP will not give you to open a new TodayQuiz, if it is already open
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
