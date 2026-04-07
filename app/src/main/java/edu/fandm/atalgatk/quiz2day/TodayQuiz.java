@@ -63,7 +63,7 @@ public class TodayQuiz extends AppCompatActivity {
         String level = prefs.getString("selected_level", "NOT SELECTED");
 
         if (tvUserLevel != null) {
-            tvUserLevel.setText("YOUR LEVEL IS: " + level);
+            tvUserLevel.setText(level);
         }
 
         boolean engDone = ProgressManager.isSubjectDone(this, "English");
