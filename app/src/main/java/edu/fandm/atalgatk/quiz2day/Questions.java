@@ -127,10 +127,11 @@ public class Questions extends AppCompatActivity {
                             // HANDLE IMAGE
                             String imageUrl = doc.getString("img");
 
-                            if (imageUrl != null && !imageUrl.isEmpty()) {
+                            if (imageUrl != null && !imageUrl.trim().isEmpty()) {
                                 questionImage.setVisibility(View.VISIBLE);
                                 Picasso.get().load(imageUrl).into(questionImage);
                             } else {
+                                questionImage.setImageDrawable(null);
                                 questionImage.setVisibility(View.GONE);
                             }
 
