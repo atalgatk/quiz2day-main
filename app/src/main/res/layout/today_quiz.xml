@@ -81,15 +81,25 @@
             android:layout_marginBottom="30dp"/>
 
         <TextView
-            android:id="@+id/tvUserLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="YOUR LEVEL IS: ESL-1"
+            android:text="YOUR LEVEL IS:"
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="#2D5AA0"
-            android:layout_marginTop="-20dp"
-            android:layout_marginBottom="20dp"/>
+            android:gravity="center"
+            android:layout_marginTop="0dp" />
+
+        <TextView
+            android:id="@+id/tvUserLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ESL-1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#2D5AA0"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -97,6 +107,7 @@
             android:text="Complete 4 quizzes to keep your streak 🔥"
             android:textSize="14sp"
             android:textColor="#666666"
+            android:gravity="center"
             android:layout_marginBottom="24dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
