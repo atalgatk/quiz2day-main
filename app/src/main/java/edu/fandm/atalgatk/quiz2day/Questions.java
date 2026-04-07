@@ -128,9 +128,6 @@ public class Questions extends AppCompatActivity {
                                 Picasso.get().load(imageUrl).into(questionImage);
                             } else {
                                 questionImage.setVisibility(View.GONE);
-                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) questionImage.getLayoutParams();
-                                params.bottomMargin = 0;
-                                questionImage.setLayoutParams(params);
                             }
 
                         })
