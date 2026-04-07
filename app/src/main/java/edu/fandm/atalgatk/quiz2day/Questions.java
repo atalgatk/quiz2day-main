@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -159,10 +160,12 @@ public class Questions extends AppCompatActivity {
                 new android.os.Handler().postDelayed(() -> {
                     Intent i = new Intent(this, Explanation.class);
                     i.putExtra("explanation", explanationText);
+                    i.putExtra("correctAnswer", correctAnswer);
                     startActivity(i);
-                }, 800);
+                }, 500);
             }else{
                 highlightWrong();
+                Toast.makeText(this, "Incorrect", Toast.LENGTH_SHORT).show();
             }
         });
 
