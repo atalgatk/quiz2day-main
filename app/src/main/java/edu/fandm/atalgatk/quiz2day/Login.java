@@ -2,8 +2,13 @@ package edu.fandm.atalgatk.quiz2day;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +41,7 @@ public class Login extends AppCompatActivity {
     private SharedPreferences prefs;
     private AutoCompleteTextView emailAutocomplete;
     private EditText passwordField;
+    ConnectivityManager.NetworkCallback networkCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,7 @@ public class Login extends AppCompatActivity {
         passwordField = findViewById(R.id.etPassword);
         Button loginBtn = findViewById(R.id.btnLogin);
         Button registerBtn = findViewById(R.id.btnRegister);
+        Button reset = findViewById(R.id.forgotpassword);
 
         // 3. Setup Autocomplete Logic
         setupEmailAutocomplete();
@@ -93,9 +100,8 @@ public class Login extends AppCompatActivity {
             String email = emailAutocomplete.getText().toString().trim();
             String password = passwordField.getText().toString().trim();
             if (!email.isEmpty() && !password.isEmpty()) {
-                registerNewUser(email, password);
                 if(password.length()>= 6){
-                    signIn(email, password);
+                    registerNewUser(email, password);
                 }else {
                     Toast.makeText(this, "Password must be at least 6 characters ", Toast.LENGTH_LONG).show();
                 }
@@ -103,6 +109,73 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
         });
+
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailAutocomplete.getText().toString().trim();
+                if(email.isEmpty()){
+                    Toast.makeText(Login.this, "Please enter your email to reset your password", Toast.LENGTH_SHORT).show();
+                }else{
+                    resetPassword(email);
+                }
+            }
+        });
+    }
+
+    // 2. Start monitoring when the activity becomes visible
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerNetworkMonitoring();
+    }
+
+    // 3. Stop monitoring when the activity is no longer visible to save battery
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null && networkCallback != null) {
+            connectivityManager.unregisterNetworkCallback(networkCallback);
+        }
+    }
+
+    private void registerNetworkMonitoring() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkRequest networkRequest = new NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .build();
+
+        networkCallback = new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(Network network) {
+                // Note: This runs on a background thread! Use runOnUiThread for UI changes.
+                runOnUiThread(() -> {
+                    Toast.makeText(Login.this, "Connected to Internet", Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onLost(Network network) {
+                runOnUiThread(() -> {
+                    Toast.makeText(Login.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                });
+            }
+        };
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) return false;
+
+        // Get current network capabilities
+        Network activeNetwork = cm.getActiveNetwork();
+        if (activeNetwork == null) return false;
+
+        NetworkCapabilities caps = cm.getNetworkCapabilities(activeNetwork);
+        return caps != null && caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
     }
 
     private void setupEmailAutocomplete() {
@@ -127,7 +200,9 @@ public class Login extends AppCompatActivity {
                         saveEmailToPrefs(email);
                         Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
                         navigateToLevelSelect(fba.getCurrentUser().getUid());
-                    } else {
+                    } else if(!isNetworkAvailable()) {
+                        Toast.makeText(getApplicationContext(), "Login Failed. Internet Connection Required", Toast.LENGTH_LONG).show();
+                    }else{
                         Toast.makeText(getApplicationContext(), "Login Failed. Please try again.", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -140,9 +215,11 @@ public class Login extends AppCompatActivity {
                         saveEmailToPrefs(email);
                         Toast.makeText(getApplicationContext(), "New User Created!", Toast.LENGTH_SHORT).show();
                         navigateToLevelSelect(fba.getCurrentUser().getUid());
-                    } else {
+                    } else if(!isNetworkAvailable()) {
+                        Toast.makeText(getApplicationContext(), "Registration Failed. Internet Connection Required", Toast.LENGTH_LONG).show();
+                    }else {
                         Log.e(TAG, "Registration failed", task.getException());
-                        Toast.makeText(getApplicationContext(), "Registration Failed.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Registration Failed. Please Try again.", Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -158,6 +235,20 @@ public class Login extends AppCompatActivity {
         Intent i = new Intent(Login.this, LevelSelect.class);
         i.putExtra("user_id", uid);
         startActivity(i);
-        finish();
+//        finish();
     }
+
+    private void resetPassword(String email) {
+        fba.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(Login.this,
+                                "Reset link has been sent to your email!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(Login.this,
+                                "Error: Could not send reset email. Please Try Again", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 }
