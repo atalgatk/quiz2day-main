@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity {
         passwordField = findViewById(R.id.etPassword);
         Button loginBtn = findViewById(R.id.btnLogin);
         Button registerBtn = findViewById(R.id.btnRegister);
-        Button reset = findViewById(R.id.forgotpassword);
+        TextView reset = findViewById(R.id.forgotpassword);
 
         // 3. Setup Autocomplete Logic
         setupEmailAutocomplete();
