@@ -26,12 +26,14 @@ public class Explanation extends AppCompatActivity {
         // 1. Retrieve data passed from the Questions activity
         // These keys ("subject", "answer", "explanation") must match the ones used in Intent.putExtra
         String subject = getIntent().getStringExtra("subject");
-        String answer = getIntent().getStringExtra("answer");
+        String correctAnswer = getIntent().getStringExtra("correct answer");
         String explanation = getIntent().getStringExtra("explanation");
 
+
+
         // 2. Display the correct answer and the "Why" explanation
-        if (answer != null) {
-            tvCorrectAnswer.setText("Answer = " + answer);
+        if (correctAnswer != null) {
+            tvCorrectAnswer.setText("Answer = " + correctAnswer);
         }
 
         if (explanation != null) {
