@@ -160,7 +160,7 @@ public class Questions extends AppCompatActivity {
                 new android.os.Handler().postDelayed(() -> {
                     Intent i = new Intent(this, Explanation.class);
                     i.putExtra("explanation", explanationText);
-                    i.putExtra("correctAnswer", correctAnswer);
+                    i.putExtra("answer", correctAnswer);
                     startActivity(i);
                 }, 500);
             }else{
