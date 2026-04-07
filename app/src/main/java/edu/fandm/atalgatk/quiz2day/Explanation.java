@@ -36,8 +36,8 @@ public class Explanation extends AppCompatActivity {
             tvCorrectAnswer.setText("Answer = " + correctAnswer);
         }
 
-        if (explanation != null) {
-            tvExplanation.setText(explanation);
+        if (subject != null) {
+            ProgressManager.setSubjectDone(this, subject);
         }
 
         // 3. CRITICAL STEP: Mark this subject as completed in the ProgressManager
