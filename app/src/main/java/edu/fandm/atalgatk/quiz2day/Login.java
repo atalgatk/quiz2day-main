@@ -79,6 +79,7 @@ public class Login extends AppCompatActivity {
         FirebaseUser currentUser = fba.getCurrentUser();
         if (currentUser != null) {
             navigateToLevelSelect(currentUser.getUid());
+            finish();
         }
 
         // 6. Click Listeners
@@ -235,7 +236,7 @@ public class Login extends AppCompatActivity {
         Intent i = new Intent(Login.this, LevelSelect.class);
         i.putExtra("user_id", uid);
         startActivity(i);
-//        finish();
+        finish();
     }
 
     private void resetPassword(String email) {

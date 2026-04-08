@@ -9,10 +9,13 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class TodayQuiz extends AppCompatActivity {
 
@@ -48,6 +51,20 @@ public class TodayQuiz extends AppCompatActivity {
 
         updateUI();
 
+        ImageButton logoutBtn = findViewById(R.id.btnLogout);
+
+        logoutBtn.setOnClickListener(v -> {
+            // 1. Sign out from Firebase
+            FirebaseAuth.getInstance().signOut();
+
+            // 2. Redirect to Login Activity
+            Intent intent = new Intent(TodayQuiz.this, Login.class);
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
+            finish();
+        });
     }
 
     @Override
