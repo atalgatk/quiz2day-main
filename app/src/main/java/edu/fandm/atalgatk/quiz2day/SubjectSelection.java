@@ -60,7 +60,7 @@ public class SubjectSelection extends AppCompatActivity {
         TextView title = findViewById(R.id.titleText);
         TextView subtitle = findViewById(R.id.subtitleText);
         if (allCompleted(prefs)) {
-            title.setText("Daily Quiz Completed!🎉");
+            title.setText("Daily Quiz Completed 🎉");
             subtitle.setText("Come back tomorrow!");
 
         }
