@@ -58,8 +58,11 @@ public class SubjectSelection extends AppCompatActivity {
         updateDoneState(ss, "Social Studies", prefs);
 
         TextView title = findViewById(R.id.titleText);
+        TextView subtitle = findViewById(R.id.subtitleText);
         if (allCompleted(prefs)) {
             title.setText("Daily Quiz Completed!🎉");
+            subtitle.setText("Come back tomorrow!");
+
         }
     }
 
