@@ -45,7 +45,11 @@ public class TodayQuiz extends AppCompatActivity {
 
         //switching to SubjectSelection.class
         btnStartQuiz.setOnClickListener(v -> {
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            String level = prefs.getString("selected_level", "ESL-1");  //get level
+
             Intent intent = new Intent(TodayQuiz.this, SubjectSelection.class);
+            intent.putExtra("level", level);  // send level
             startActivity(intent);
         });
 

@@ -81,8 +81,8 @@ public class Questions extends AppCompatActivity {
         String level = getIntent().getStringExtra("level");
 
         //fallback to prevent crashing
-        if (subject == null ) subject = "Math";
-        if (level == null) level = "ESL-1";
+//        if (subject == null ) subject = "Math";
+//        if (level == null) level = "ESL-1";
 
         //setting subject
         subjectTitle.setText(subject);

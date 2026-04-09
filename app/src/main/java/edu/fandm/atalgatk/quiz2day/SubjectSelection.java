@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class SubjectSelection extends AppCompatActivity {
 
     Button english, math, science, ss;
+    String level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class SubjectSelection extends AppCompatActivity {
 
         ss = findViewById(R.id.ss_button);
         ss.setOnClickListener(v->openQuestion("Social Studies"));
+
+        level = getIntent().getStringExtra("level");
 
     }
 
@@ -106,6 +109,7 @@ public class SubjectSelection extends AppCompatActivity {
 
         Intent i = new Intent(this, Questions.class);
         i.putExtra("subject", subject);
+        i.putExtra("level", level);
         startActivity(i);
     }
 
