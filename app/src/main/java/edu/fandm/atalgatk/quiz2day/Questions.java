@@ -1,6 +1,7 @@
 package edu.fandm.atalgatk.quiz2day;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -161,6 +162,13 @@ public class Questions extends AppCompatActivity {
 
             if (selectedAnswer.equals(correctAnswer)){
                 highlightCorrect();
+
+                //saving completion
+                SharedPreferences prefs = getSharedPreferences("Quiz2Day", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+
+                editor.putBoolean(subject + "_done", true);
+                editor.apply();
 
                 //go to why (explanation) screen
                 new android.os.Handler().postDelayed(() -> {
