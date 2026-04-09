@@ -66,7 +66,7 @@ public class TodayQuiz extends AppCompatActivity {
             finish();
         });
 
-        ProgressManager.resetDailyProgress(this);
+        //ProgressManager.resetDailyProgress(this);
     }
 
     @Override

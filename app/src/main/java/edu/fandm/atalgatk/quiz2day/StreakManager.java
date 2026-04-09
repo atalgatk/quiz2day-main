@@ -38,6 +38,8 @@ public class StreakManager {
             if (hasMissedDay(context)) {
                 prefs.edit().putInt(KEY_STREAK, 0).apply();
             }
+
+            prefs.edit().putString(KEY_LAST_DATE, today).apply();
         }
     }
 
