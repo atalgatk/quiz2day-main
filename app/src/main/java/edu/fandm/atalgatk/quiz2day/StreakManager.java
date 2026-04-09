@@ -16,37 +16,28 @@ public class StreakManager {
         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
-    public static int getStreak(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        //check missed day and return the number of streak
-        checkAndResetIfNeeded(context);
-        return prefs.getInt(KEY_STREAK, 0);
-    }
-
     public static void checkAndResetIfNeeded(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String today = getToday();
         String lastDate = prefs.getString(KEY_LAST_DATE, "");
 
-        // if it's the user's first time ever, just save today's date and stop
         if (lastDate.isEmpty()) {
             prefs.edit().putString(KEY_LAST_DATE, today).apply();
             return;
         }
 
-        // IF THE DATES ARE DIFFERENT, IT'S A NEW DAY
+        //we check if it is a new day
         if (!lastDate.equals(today)) {
 
-            // 1)check if they missed a day to reset the streak number
+            //1)reset dots: if today is a new day, progressmanager has to make all dots gray
+            ProgressManager.resetDailyProgress(context);
+
+            // 2. СБРОС СТРИКА: Если сегодня Четверг, а последний раз тесты делали во Вторник
+            //2)reset our streak
+            //if they missed the next day, then we 0 the streak
             if (hasMissedDay(context)) {
                 prefs.edit().putInt(KEY_STREAK, 0).apply();
             }
-
-            // 2)CRITICAL: Reset the dots (ProgressManager)
-            ProgressManager.resetDailyProgress(context);
-
-            // 3) update last_date to today so this doesn't run again until tomorrow
-            prefs.edit().putString(KEY_LAST_DATE, today).apply();
         }
     }
 
@@ -63,9 +54,7 @@ public class StreakManager {
             long diff = today.getTime() - last.getTime();
             long days = diff / (1000 * 60 * 60 * 24);
 
-            // if days == 1, means they worked yesterday (all good)
-            // if days > 1, means they missed yesterday (reset)
-            return days > 1;
+            return days >= 2;
         } catch (Exception e) {
             return false;
         }
@@ -76,19 +65,20 @@ public class StreakManager {
         String today = getToday();
         String lastDate = prefs.getString(KEY_LAST_DATE, "");
 
-        // if today we have already completed, do nothing
+        //if we have today's progress, then we don't add anything
         if (today.equals(lastDate)) return;
 
-        //if we finished everything for the day for the first time, +1 to the streak
         int currentStreak = prefs.getInt(KEY_STREAK, 0);
+
+        //save: +1 streak and set today as last date
         prefs.edit()
                 .putInt(KEY_STREAK, currentStreak + 1)
                 .putString(KEY_LAST_DATE, today)
                 .apply();
     }
 
-    public static void resetStreak(Context context) {
+    public static int getStreak(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putInt(KEY_STREAK, 0).apply();
+        return prefs.getInt(KEY_STREAK, 0);
     }
 }
