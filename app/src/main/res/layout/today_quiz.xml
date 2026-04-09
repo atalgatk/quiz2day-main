@@ -86,6 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Today's Quiz"
+            android:fontFamily="@font/montserrat_medium"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="#000000"
@@ -98,6 +99,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="#2D5AA0"
+            android:fontFamily="@font/montserrat_medium"
             android:gravity="center"
             android:layout_marginTop="0dp" />
 
@@ -106,6 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ESL-1"
+            android:fontFamily="@font/montserrat_medium"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="#2D5AA0"
@@ -118,6 +121,7 @@
             android:text="Complete one question in each subject to keep your streak going 🔥"
             android:textSize="14sp"
             android:textColor="#666666"
+            android:fontFamily="@font/montserrat_medium"
             android:gravity="center"
             android:layout_marginBottom="24dp"/>
 
@@ -130,6 +134,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
+            android:fontFamily="@font/montserrat_medium"
             android:backgroundTint="#2D5AA0" />
 
         <LinearLayout
