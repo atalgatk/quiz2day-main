@@ -12,6 +12,7 @@ import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -84,6 +85,7 @@ public class Login extends AppCompatActivity {
 
         // 6. Click Listeners
         loginBtn.setOnClickListener(v -> {
+            hideKeyboard();
             String email = emailAutocomplete.getText().toString().trim();
             String password = passwordField.getText().toString().trim();
             if (!email.isEmpty() && !password.isEmpty()) {
@@ -98,6 +100,7 @@ public class Login extends AppCompatActivity {
         });
 
         registerBtn.setOnClickListener(v -> {
+            hideKeyboard();
             String email = emailAutocomplete.getText().toString().trim();
             String password = passwordField.getText().toString().trim();
             if (!email.isEmpty() && !password.isEmpty()) {
@@ -153,7 +156,7 @@ public class Login extends AppCompatActivity {
             public void onAvailable(Network network) {
                 // Note: This runs on a background thread! Use runOnUiThread for UI changes.
                 runOnUiThread(() -> {
-                    Toast.makeText(Login.this, "Connected to Internet", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Connected to Internet");
                 });
             }
 
@@ -240,6 +243,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void resetPassword(String email) {
+        hideKeyboard();
         fba.sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -250,6 +254,14 @@ public class Login extends AppCompatActivity {
                                 "Error: Could not send reset email. Please Try Again", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 }
