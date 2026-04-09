@@ -32,7 +32,6 @@ public class StreakManager {
             //1)reset dots: if today is a new day, progressmanager has to make all dots gray
             ProgressManager.resetDailyProgress(context);
 
-            // 2. СБРОС СТРИКА: Если сегодня Четверг, а последний раз тесты делали во Вторник
             //2)reset our streak
             //if they missed the next day, then we 0 the streak
             if (hasMissedDay(context)) {
@@ -66,11 +65,10 @@ public class StreakManager {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String today = getToday();
         String lastDate = prefs.getString(KEY_LAST_DATE, "");
+        int currentStreak = prefs.getInt(KEY_STREAK, 0);
 
         //if we have today's progress, then we don't add anything
-        if (today.equals(lastDate)) return;
-
-        int currentStreak = prefs.getInt(KEY_STREAK, 0);
+        if (today.equals(lastDate) && currentStreak > 0) return;
 
         //save: +1 streak and set today as last date
         prefs.edit()
