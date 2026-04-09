@@ -55,7 +55,7 @@ public class TodayQuiz extends AppCompatActivity {
 
         updateUI();
 
-        ImageButton logoutBtn = findViewById(R.id.btnLogout);
+        Button logoutBtn = findViewById(R.id.btnLogout);
 
         logoutBtn.setOnClickListener(v -> {
             // 1. Sign out from Firebase
