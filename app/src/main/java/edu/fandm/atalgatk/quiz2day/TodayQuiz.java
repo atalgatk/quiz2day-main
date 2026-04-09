@@ -102,6 +102,9 @@ public class TodayQuiz extends AppCompatActivity {
             //count the day
             StreakManager.isTodayCompleted(this);
 
+            int currentStreak = StreakManager.getStreak(this);
+            tvStreak.setText(String.valueOf(currentStreak));
+
             ivStreakIcon.setColorFilter(null);
             ivStreakIcon.setAlpha(1.0f);
             tvStreak.setTextColor(Color.BLACK);
