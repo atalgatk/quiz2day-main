@@ -75,23 +75,19 @@ public class TodayQuiz extends AppCompatActivity {
     }
 
     private void updateUI() {
+        // we check: is it a new day? did we miss anything?
+        //it is going to reset dots and streak in memory before we "draw" them
+        StreakManager.checkAndResetIfNeeded(this);
 
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String level = prefs.getString("selected_level", "NOT SELECTED");
+        if (tvUserLevel != null) tvUserLevel.setText(level);
 
-        if (tvUserLevel != null) {
-            tvUserLevel.setText(level);
-        }
-
+        //now we count the progress (after the reset)
         boolean engDone = ProgressManager.isSubjectDone(this, "English");
         boolean mathDone = ProgressManager.isSubjectDone(this, "Math");
         boolean sciDone = ProgressManager.isSubjectDone(this, "Science");
         boolean socDone = ProgressManager.isSubjectDone(this, "Social Studies");
-
-        // check for missing day
-        if (StreakManager.hasMissedDay(this)) {
-            StreakManager.resetStreak(this);
-        }
 
         setDotStatus(dotEnglish, engDone);
         setDotStatus(dotMath, mathDone);
@@ -101,15 +97,14 @@ public class TodayQuiz extends AppCompatActivity {
         boolean allDone = engDone && mathDone && sciDone && socDone;
 
         if (allDone) {
-            //сall the method to increment the streak by +1 if it hasn't been updated today
+            //count the day
             StreakManager.isTodayCompleted(this);
 
-            // do the icon colorful
             ivStreakIcon.setColorFilter(null);
             ivStreakIcon.setAlpha(1.0f);
             tvStreak.setTextColor(Color.BLACK);
         } else {
-            //gray out the icon if not all subjects are completed
+            //gray the icon
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
             ivStreakIcon.setColorFilter(new ColorMatrixColorFilter(matrix));
@@ -117,7 +112,7 @@ public class TodayQuiz extends AppCompatActivity {
             tvStreak.setTextColor(Color.GRAY);
         }
 
-        //update the # of our streak on the screen
+        //take the actual number of streak from memory
         int streak = StreakManager.getStreak(this);
         tvStreak.setText(String.valueOf(streak));
     }
