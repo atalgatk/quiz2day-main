@@ -167,7 +167,14 @@ public class Questions extends AppCompatActivity {
                 SharedPreferences prefs = getSharedPreferences("Quiz2Day", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
 
+                //getting todays date
+                String today = new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.getDefault())
+                        .format(new java.util.Date());
+
+
                 editor.putBoolean(subject + "_done", true);
+                editor.putString("last_date", today);
+
                 editor.apply();
 
                 //go to why (explanation) screen

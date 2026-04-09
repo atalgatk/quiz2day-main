@@ -51,6 +51,21 @@ public class SubjectSelection extends AppCompatActivity {
         super.onResume();
 
         SharedPreferences prefs = getSharedPreferences("Quiz2Day", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        String today = new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.getDefault())
+                .format(new java.util.Date());
+        String lastDate = prefs.getString("last_date", "");
+
+        // if new day we RESET everything
+        if (!today.equals(lastDate)) {
+            editor.clear(); // clears all "_done"
+            editor.putString("last_date", today); // save new day
+            editor.apply();
+
+            //reloading prefs after reset
+            prefs = getSharedPreferences("Quiz2Day", MODE_PRIVATE);
+        }
 
         updateDoneState(english, "English", prefs);
         updateDoneState(math, "Math", prefs);
