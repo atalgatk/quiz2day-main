@@ -74,7 +74,7 @@ public class SubjectSelection extends AppCompatActivity {
             button.setAlpha(0.6f);
             Log.d("DEBUG", subject + "_done = " + done);
 
-            // OPTIONAL: strike-through (remove if you don’t like it)
+            // strike-through
             button.setPaintFlags(button.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
