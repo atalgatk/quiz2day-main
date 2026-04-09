@@ -22,6 +22,7 @@
             android:padding="30dp"
             android:gravity="center_horizontal"
             android:elevation="4dp"
+            android:fontFamily="@font/montserrat_medium"
             android:layout_marginBottom="20dp">
 
             <TextView
@@ -55,6 +56,7 @@
                     android:layout_height="wrap_content"
                     android:text="Answer = [Correct Answer]"
                     android:textSize="18sp"
+                    android:fontFamily="@font/montserrat_medium"
                     android:textColor="#2E7D32"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -72,6 +74,7 @@
                 android:text="Explanation text goes here..."
                 android:textSize="16sp"
                 android:textColor="#333333"
+                android:fontFamily="@font/montserrat_medium"
                 android:lineSpacingExtra="6dp"/>
 
         </LinearLayout>
