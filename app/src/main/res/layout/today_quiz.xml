@@ -22,7 +22,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:src="@drawable/logout" />
 
         <androidx.cardview.widget.CardView

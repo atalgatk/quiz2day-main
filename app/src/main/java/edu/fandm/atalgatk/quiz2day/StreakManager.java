@@ -11,6 +11,7 @@ public class StreakManager {
     private static final String PREFS_NAME = "StreakPrefs";
     private static final String KEY_STREAK = "streak_count";
     private static final String KEY_LAST_DATE = "last_date";
+    private static final String KEY_COMPLETED_TODAY = "completed_today";
 
     private static String getToday() {
         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
@@ -26,19 +27,18 @@ public class StreakManager {
             return;
         }
 
-        //we check if it is a new day
         if (!lastDate.equals(today)) {
 
-            //1)reset dots: if today is a new day, progressmanager has to make all dots gray
             ProgressManager.resetDailyProgress(context);
 
-            //2)reset our streak
-            //if they missed the next day, then we 0 the streak
             if (hasMissedDay(context)) {
                 prefs.edit().putInt(KEY_STREAK, 0).apply();
             }
 
-            prefs.edit().putString(KEY_LAST_DATE, today).apply();
+            prefs.edit()
+                    .putBoolean(KEY_COMPLETED_TODAY, false)
+                    .putString(KEY_LAST_DATE, today)
+                    .apply();
         }
     }
 
@@ -63,17 +63,15 @@ public class StreakManager {
 
     public static void isTodayCompleted(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String today = getToday();
-        String lastDate = prefs.getString(KEY_LAST_DATE, "");
+
+        boolean alreadyCompleted = prefs.getBoolean(KEY_COMPLETED_TODAY, false);
+        if (alreadyCompleted) return;
+
         int currentStreak = prefs.getInt(KEY_STREAK, 0);
 
-        //if we have today's progress, then we don't add anything
-        if (today.equals(lastDate) && currentStreak > 0) return;
-
-        //save: +1 streak and set today as last date
         prefs.edit()
+                .putBoolean(KEY_COMPLETED_TODAY, true)
                 .putInt(KEY_STREAK, currentStreak + 1)
-                .putString(KEY_LAST_DATE, today)
                 .apply();
     }
 
