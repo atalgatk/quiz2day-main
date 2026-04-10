@@ -46,10 +46,11 @@ public class TodayQuiz extends AppCompatActivity {
         //switching to SubjectSelection.class
         btnStartQuiz.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-            String level = prefs.getString("selected_level", "ESL-1");  //get level
+
+            String levelKey = prefs.getString("selected_level_key", "ESL-1");
 
             Intent intent = new Intent(TodayQuiz.this, SubjectSelection.class);
-            intent.putExtra("level", level);  // send level
+            intent.putExtra("level", levelKey);
             startActivity(intent);
         });
 
@@ -85,9 +86,14 @@ public class TodayQuiz extends AppCompatActivity {
         //it is going to reset dots and streak in memory before we "draw" them
         StreakManager.checkAndResetIfNeeded(this);
 
+        //SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        //String level = prefs.getString("selected_level", "NOT SELECTED");
+        //if (tvUserLevel != null) tvUserLevel.setText(level);
+
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        String level = prefs.getString("selected_level", "NOT SELECTED");
-        if (tvUserLevel != null) tvUserLevel.setText(level);
+
+        String displayLevel = prefs.getString("selected_level_display", "NOT SELECTED");
+        tvUserLevel.setText(displayLevel);
 
         //now we count the progress (after the reset)
         boolean engDone = ProgressManager.isSubjectDone(this, "English");

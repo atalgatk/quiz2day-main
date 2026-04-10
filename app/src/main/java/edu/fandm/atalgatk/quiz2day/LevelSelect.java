@@ -64,13 +64,27 @@ public class LevelSelect extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Store the chosen level in our variable
-                selectedLevel = levels[which];
+                //selectedLevel = levels[which];
+                String displayLevel = levels[which];
+                String keyLevel;
 
-                // Save the selected level to SharedPreferences
+                if (category.contains("English")) {
+                    keyLevel = "ESL-" + (which + 1);
+                } else {
+                    keyLevel = "ABE-" + (which + 1);
+                }
+
                 getSharedPreferences("UserPrefs", MODE_PRIVATE)
                         .edit()
-                        .putString("selected_level", selectedLevel)
+                        .putString("selected_level_display", displayLevel)
+                        .putString("selected_level_key", keyLevel)
                         .apply();
+
+                // Save the selected level to SharedPreferences
+                //getSharedPreferences("UserPrefs", MODE_PRIVATE)
+                        //.edit()
+                        //.putString("selected_level", selectedLevel)
+                        //.apply();
 
 
                 // Create an Intent to navigate to TodayQuiz
