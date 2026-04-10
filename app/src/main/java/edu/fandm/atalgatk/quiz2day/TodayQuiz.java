@@ -47,9 +47,13 @@ public class TodayQuiz extends AppCompatActivity {
         btnStartQuiz.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 
+            //get firebase key (for loading correct questions)
             String levelKey = prefs.getString("selected_level_key", "ESL-1");
 
+            //move to SubjectSelection.class
             Intent intent = new Intent(TodayQuiz.this, SubjectSelection.class);
+
+            //pass level key to next screen
             intent.putExtra("level", levelKey);
             startActivity(intent);
         });
@@ -92,7 +96,9 @@ public class TodayQuiz extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 
+        //get display-friendly level (for UI only)
         String displayLevel = prefs.getString("selected_level_display", "NOT SELECTED");
+        //show level on screen
         tvUserLevel.setText(displayLevel);
 
         //now we count the progress (after the reset)
