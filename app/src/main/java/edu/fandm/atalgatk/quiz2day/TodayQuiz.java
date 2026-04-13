@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ImageView;
+import static android.content.Context.MODE_PRIVATE;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,7 +22,7 @@ public class TodayQuiz extends AppCompatActivity {
 
 
     private TextView tvStreak, tvUserLevel;
-    private Button btnStartQuiz;
+    private Button btnStartQuiz,btnLogout;
     private ImageView ivStreakIcon;
 
     private View dotEnglish, dotMath, dotScience, dotSocial;
@@ -90,9 +91,6 @@ public class TodayQuiz extends AppCompatActivity {
         //it is going to reset dots and streak in memory before we "draw" them
         StreakManager.checkAndResetIfNeeded(this);
 
-        //SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        //String level = prefs.getString("selected_level", "NOT SELECTED");
-        //if (tvUserLevel != null) tvUserLevel.setText(level);
 
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 
@@ -117,9 +115,6 @@ public class TodayQuiz extends AppCompatActivity {
         if (allDone) {
             //count the day
             StreakManager.isTodayCompleted(this);
-
-            //int currentStreak = StreakManager.getStreak(this);
-            //tvStreak.setText(String.valueOf(currentStreak));
 
             ivStreakIcon.setColorFilter(null);
             ivStreakIcon.setAlpha(1.0f);

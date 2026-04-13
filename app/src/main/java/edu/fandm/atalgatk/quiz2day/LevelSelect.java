@@ -76,15 +76,15 @@ public class LevelSelect extends AppCompatActivity {
 
                 getSharedPreferences("UserPrefs", MODE_PRIVATE)
                         .edit()
-                        .putString("selected_level_display", displayLevel) //UI
-                        .putString("selected_level_key", keyLevel) //Firebase
+                        .putString("selected_level_display", displayLevel)
+                        .putString("selected_level_key", keyLevel)
                         .apply();
 
                 // Save the selected level to SharedPreferences
                 //getSharedPreferences("UserPrefs", MODE_PRIVATE)
-                        //.edit()
-                        //.putString("selected_level", selectedLevel)
-                        //.apply();
+                //.edit()
+                //.putString("selected_level", selectedLevel)
+                //.apply();
 
 
                 // Create an Intent to navigate to TodayQuiz
