@@ -110,16 +110,29 @@ public class TodayQuiz extends AppCompatActivity {
         setDotStatus(dotScience, sciDone);
         setDotStatus(dotSocial, socDone);
 
+        boolean anyDone = engDone || mathDone || sciDone || socDone;
         boolean allDone = engDone && mathDone && sciDone && socDone;
 
         if (allDone) {
             //count the day
             StreakManager.isTodayCompleted(this);
 
+            btnStartQuiz.setText("Completed");
+            btnStartQuiz.setEnabled(true);
+            btnStartQuiz.setAlpha(1.0f);
+
             ivStreakIcon.setColorFilter(null);
             ivStreakIcon.setAlpha(1.0f);
             tvStreak.setTextColor(Color.BLACK);
         } else {
+            if (anyDone) {
+                btnStartQuiz.setText("Continue");
+            } else {
+                btnStartQuiz.setText("Get Started");
+            }
+            btnStartQuiz.setEnabled(true);
+
+
             //gray the icon
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
