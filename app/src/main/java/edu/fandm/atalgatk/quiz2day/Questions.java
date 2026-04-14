@@ -35,6 +35,7 @@ public class Questions extends AppCompatActivity {
     ImageView questionImage;
     String explanationText ="";
 
+    String level;
 
 
     TextView subjectTitle;
