@@ -51,7 +51,7 @@
             <Button
                 android:id="@+id/btnA"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:text="Option A"
                 android:textSize="20sp"
                 android:fontFamily="@font/montserrat_medium"
@@ -61,7 +61,7 @@
             <Button
                 android:id="@+id/btnB"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:text="Option B"
                 android:fontFamily="@font/montserrat_medium"
                 android:textSize="20sp"
@@ -71,7 +71,7 @@
             <Button
                 android:id="@+id/btnC"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:text="Option C"
                 android:textSize="20sp"
                 android:fontFamily="@font/montserrat_medium"
@@ -81,7 +81,7 @@
             <Button
                 android:id="@+id/btnD"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:text="Option D"
                 android:textSize="20sp"
                 android:fontFamily="@font/montserrat_medium"
