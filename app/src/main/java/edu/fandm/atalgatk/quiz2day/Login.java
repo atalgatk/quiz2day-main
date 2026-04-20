@@ -76,7 +76,7 @@ public class Login extends AppCompatActivity {
         // 4. Initialize Firebase
         fba = FirebaseAuth.getInstance();
 
-        // 5. Check if user is already logged in
+        // 5. Check if user is already logged in and skip the page if true
         FirebaseUser currentUser = fba.getCurrentUser();
         if (currentUser != null) {
             navigateToLevelSelect(currentUser.getUid());
@@ -144,6 +144,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
+//   Continously check if the user is connected to the internet and show them a message when they are not
     private void registerNetworkMonitoring() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -182,6 +183,7 @@ public class Login extends AppCompatActivity {
         return caps != null && caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
     }
 
+//    Set up auto complete based on the last email that was used to log in
     private void setupEmailAutocomplete() {
         String lastEmail = prefs.getString("last_email", "");
         List<String> suggestions = new ArrayList<>();
@@ -197,6 +199,7 @@ public class Login extends AppCompatActivity {
         emailAutocomplete.setAdapter(adapter);
     }
 
+//    Sign in with existing user credintials
     private void signIn(String email, String password) {
         fba.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
@@ -212,6 +215,7 @@ public class Login extends AppCompatActivity {
                 });
     }
 
+//    Register new user in firebase.
     private void registerNewUser(String email, String password) {
         fba.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
@@ -228,6 +232,7 @@ public class Login extends AppCompatActivity {
                 });
     }
 
+//    save the last email used into shared preferences
     private void saveEmailToPrefs(String email) {
         // Correctly using the class-level 'prefs' object
         SharedPreferences.Editor editor = prefs.edit();
@@ -235,6 +240,7 @@ public class Login extends AppCompatActivity {
         editor.apply();
     }
 
+//    Trigger next page based on if the login or register button was clicked
     private void navigateToLevelSelect(String uid) {
         Intent i = new Intent(Login.this, LevelSelect.class);
         i.putExtra("user_id", uid);
@@ -242,6 +248,7 @@ public class Login extends AppCompatActivity {
         finish();
     }
 
+//    Use Firebase built in reset if user chooses to click on the reset password button
     private void resetPassword(String email) {
         hideKeyboard();
         fba.sendPasswordResetEmail(email)
@@ -256,6 +263,7 @@ public class Login extends AppCompatActivity {
                 });
     }
 
+//    Remove keyboard from screen used whenever someone clicks a button just in case it does not do it automatically
     private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
