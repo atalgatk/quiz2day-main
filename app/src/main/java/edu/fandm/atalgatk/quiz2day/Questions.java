@@ -30,12 +30,10 @@ public class Questions extends AppCompatActivity {
     String selectedAnswer ="";
     String correctAnswer ="";
     String subject = "";
-
     TextView questionText;
     ImageView questionImage;
     String explanationText ="";
 
-    String level;
 
 
     TextView subjectTitle;
