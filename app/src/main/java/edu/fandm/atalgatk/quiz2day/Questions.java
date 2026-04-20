@@ -26,18 +26,24 @@ import com.squareup.picasso.Picasso;
 
 public class Questions extends AppCompatActivity {
 
-    Button btnA, btnB, btnC, btnD, submit;
+    Button btnA, btnB, btnC, btnD, submit; // buttons for answers and submitting
+
+    //stores what the user selects & the correct ans
     String selectedAnswer ="";
     String correctAnswer ="";
+
+    //stores subject
     String subject = "";
+
+    //store q related items
     TextView questionText;
     ImageView questionImage;
+
+    //stores explanation of correct ans
     String explanationText ="";
-
-
-
     TextView subjectTitle;
 
+    //firebase database reference
     FirebaseFirestore db;
 
     //to keep track of all colors according to users choice
@@ -54,39 +60,39 @@ public class Questions extends AppCompatActivity {
             return insets;
         });
 
-        //my buttons
+        //linking my buttons from the xml
         btnA = findViewById(R.id.btnA);
         btnB = findViewById(R.id.btnB);
         btnC = findViewById(R.id.btnC);
         btnD = findViewById(R.id.btnD);
         submit = findViewById(R.id.submit_button);
 
-        //question +img
+        //linking my question + img
         questionText = findViewById(R.id.questionText);
         questionImage = findViewById(R.id.questionImage);
         subjectTitle = findViewById(R.id.subjectTitle);
 
-        //defining my colors
+        //defining my colors for the buttons during different states
         defaultColor = ColorStateList.valueOf(Color.parseColor("#3E3D53")); //original gray
         selectedColor = getColorStateList(android.R.color.holo_blue_light); // when clicked
         correctColor = getColorStateList(android.R.color.holo_green_dark);  // correct
         wrongColor = getColorStateList(android.R.color.holo_red_dark);      // wrong
 
-        //firestore
+        //initializing my firestore database
         db = FirebaseFirestore.getInstance();
 
-        //getting data from previous screen
+        //getting data (subject + level) from previous screen
         subject = getIntent().getStringExtra("subject");
         String level = getIntent().getStringExtra("level");
 
-        //fallback to prevent crashing
-//        if (subject == null ) subject = "Math";
-//        if (level == null) level = "ESL-1";
+        //fallback used to prevent crashing
+        if (subject == null ) subject = "Math";
+        if (level == null) level = "ESL-1";
 
         //setting subject
         subjectTitle.setText(subject);
 
-        //loading question from FIRESTORE
+        //loading question from FIRESTORE based on subject and level
         db.collection("Qbank")
                 .whereEqualTo("Category", subject)
                 .whereEqualTo("Level", level)
@@ -94,62 +100,56 @@ public class Questions extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
                             if (queryDocumentSnapshots.isEmpty()) {
-                                questionText.setText("No questions found");
+                                questionText.setText("No questions found"); //show if no questions found
                                 return;
                             }
 
-                            // random question
+                            // pick a random question
                             int size = queryDocumentSnapshots.size();
                             int randomIndex = new java.util.Random().nextInt(size);
 
                             QueryDocumentSnapshot doc = (QueryDocumentSnapshot) queryDocumentSnapshots.getDocuments().get(randomIndex);
 
-                            // SET QUESTION TEXT
+                            // Setting our QUESTION TEXT
                             questionText.setText(doc.getString("Question"));
 
-                            //Set options
+                            //Set answer options
                             btnA.setText(doc.getString("A"));
                             btnB.setText(doc.getString("B"));
                             btnC.setText(doc.getString("C"));
                             btnD.setText(doc.getString("D"));
 
-                            // SET CORRECT ANSWER
+                            // SET the CORRECT ANSWER
                             String answerKey = doc.getString("Answer");
 
+                            //match the key to the actual text we have in our QBank
                             if (answerKey.equals("A")) correctAnswer = doc.getString("A");
                             else if (answerKey.equals("B")) correctAnswer = doc.getString("B");
                             else if (answerKey.equals("C")) correctAnswer = doc.getString("C");
                             else if (answerKey.equals("D")) correctAnswer = doc.getString("D");
 
-                            // SET EXPLANATION
+                            // get and show explanation
                             explanationText = doc.getString("Why");
 
-                            // HANDLE IMAGE
+                            // how we handle an img if there is one
                             String imageUrl = doc.getString("img");
 
                             if (imageUrl != null && !imageUrl.trim().isEmpty()) {
-                                questionImage.setVisibility(View.VISIBLE);
+                                questionImage.setVisibility(View.VISIBLE); //if image exists we show it
                                 Picasso.get().load(imageUrl).into(questionImage);
                             } else {
                                 questionImage.setImageDrawable(null);
-                                questionImage.setVisibility(View.GONE);
+                                questionImage.setVisibility(View.GONE); //hide image if none available
                             }
 
-                        })
+                        }) // if we have an error loading questions
                         .addOnFailureListener(e -> {
                             questionText.setText("Error loading question");
                         });
 
-//        //harcode Q for now
-//        if (subject.equals("Math")){
-//            correctAnswer = "4";
-//            btnA.setText("4");
-//            btnB.setText("3");
-//            btnC.setText("5");
-//            btnD.setText("6");
-//        }
 
         //selection logic
+        // if a user clicks an option we store their ans and highlight it
         btnA.setOnClickListener(v->selectAnswer(btnA));
         btnB.setOnClickListener(v->selectAnswer(btnB));
         btnC.setOnClickListener(v -> selectAnswer(btnC));
@@ -157,12 +157,12 @@ public class Questions extends AppCompatActivity {
 
         //submit button logic
         submit.setOnClickListener(v->{
-            if (selectedAnswer.equals("")) return;
+            if (selectedAnswer.equals("")) return; //if nth selected do nth
 
-            if (selectedAnswer.equals(correctAnswer)){
-                highlightCorrect();
+            if (selectedAnswer.equals(correctAnswer)){ //if ans is correct
+                highlightCorrect(); //we highlight the correct answer it green
 
-                //saving completion
+                //saving that the user completed the subject for today
                 SharedPreferences prefs = getSharedPreferences("Quiz2Day", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
 
@@ -170,30 +170,29 @@ public class Questions extends AppCompatActivity {
                 String today = new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.getDefault())
                         .format(new java.util.Date());
 
-
+                //marking subject as done
                 editor.putBoolean(subject + "_done", true);
                 editor.putString("last_date", today);
-
                 editor.apply();
 
                 //go to why (explanation) screen
                 new android.os.Handler().postDelayed(() -> {
                     Intent i = new Intent(this, Explanation.class);
-                    i.putExtra("explanation", explanationText);
-                    i.putExtra("answer", correctAnswer);
-                    i.putExtra("subject", subject);
+                    i.putExtra("explanation", explanationText);  //passing explanation
+                    i.putExtra("answer", correctAnswer);        // passing the correct answer
+                    i.putExtra("subject", subject);             // passing the subject
 
                     startActivity(i);
-                }, 500);
+                }, 500); //adding a delay before activity starts
             }else{
-                highlightWrong();
-                Toast.makeText(this, "Incorrect", Toast.LENGTH_SHORT).show();
+                highlightWrong(); // if ans is wrong we highlight it red
+                Toast.makeText(this, "Incorrect", Toast.LENGTH_SHORT).show(); //show msg saying incorrect
             }
         });
 
     }
 
-    // when selecting answer
+    // when selecting answer we control the highlights accordingly
     private void selectAnswer(Button selected) {
         //reset
         resetButtons();
@@ -201,7 +200,7 @@ public class Questions extends AppCompatActivity {
         selectedAnswer = selected.getText().toString();
     }
 
-    // to reset
+    // to reset all buttons to their default color
     private void resetButtons(){
         btnA.setBackgroundTintList(defaultColor);
         btnB.setBackgroundTintList(defaultColor);
@@ -209,7 +208,7 @@ public class Questions extends AppCompatActivity {
         btnD.setBackgroundTintList(defaultColor);
     }
 
-    //if answer is correct
+    //if answer is correct turns the answer green
     private void highlightCorrect() {
         if (selectedAnswer.equals(btnA.getText().toString()))
             btnA.setBackgroundTintList(correctColor);
@@ -225,7 +224,7 @@ public class Questions extends AppCompatActivity {
     }
 
 
-    //if answer is wrong
+    //if answer is wrong turns highlight red
     private void highlightWrong() {
         if (selectedAnswer.equals(btnA.getText().toString()))
             btnA.setBackgroundTintList(wrongColor);
@@ -240,6 +239,8 @@ public class Questions extends AppCompatActivity {
             btnD.setBackgroundTintList(wrongColor);
     }
 
+
+    //handles the back button in the top bar
     @Override
     public boolean onSupportNavigateUp(){
         getOnBackPressedDispatcher().onBackPressed();
