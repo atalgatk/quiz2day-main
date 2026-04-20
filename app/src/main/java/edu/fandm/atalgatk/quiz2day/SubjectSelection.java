@@ -18,8 +18,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class SubjectSelection extends AppCompatActivity {
 
-    Button english, math, science, ss;
-    String level;
+    Button english, math, science, ss; // 4 buttons for each subject
+    String level; //stores the level passed from the previous screen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class SubjectSelection extends AppCompatActivity {
             return insets;
         });
 
-        //setting all my buttons
+        //setting all my buttons from the xml
         english = findViewById(R.id.english_button);
         english.setOnClickListener(v-> openQuestion("English"));
 
@@ -45,7 +45,7 @@ public class SubjectSelection extends AppCompatActivity {
         ss = findViewById(R.id.ss_button);
         ss.setOnClickListener(v->openQuestion("Social Studies"));
 
-        level = getIntent().getStringExtra("level");
+        level = getIntent().getStringExtra("level"); //get level from prev screen
 
     }
 
@@ -53,23 +53,26 @@ public class SubjectSelection extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        //get saved data from SharedPreferences
         SharedPreferences prefs = getSharedPreferences("Quiz2Day", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
+        //get last saved date
         String today = new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.getDefault())
                 .format(new java.util.Date());
         String lastDate = prefs.getString("last_date", "");
 
-        // if new day we RESET everything
+        // if new day we RESET everything (all progress)
         if (!today.equals(lastDate)) {
             editor.clear(); // clears all "_done"
-            editor.putString("last_date", today); // save new day
+            editor.putString("last_date", today); // save new day date
             editor.apply();
 
             //reloading prefs after reset
             prefs = getSharedPreferences("Quiz2Day", MODE_PRIVATE);
         }
 
+        //update each subject button (checks if completed or not)
         updateDoneState(english, "English", prefs);
         updateDoneState(math, "Math", prefs);
         updateDoneState(science, "Science", prefs);
@@ -77,7 +80,7 @@ public class SubjectSelection extends AppCompatActivity {
 
         TextView title = findViewById(R.id.titleText);
         TextView subtitle = findViewById(R.id.subtitleText);
-        if (allCompleted(prefs)) {
+        if (allCompleted(prefs)) { // if all 4 subjects completed show completion message
             title.setText("Daily Quiz Completed 🎉");
             subtitle.setText("Come back tomorrow!");
 
@@ -85,40 +88,49 @@ public class SubjectSelection extends AppCompatActivity {
     }
 
     private void updateDoneState(Button button, String subject, SharedPreferences prefs) {
-        boolean done = prefs.getBoolean(subject + "_done", false);
+        boolean done = prefs.getBoolean(subject + "_done", false); // updates button appearance if completed
 
         if (done) {
-            button.setText(subject + " ✓");
-            button.setAlpha(0.6f);
+            button.setText(subject + " ✓"); //adding a checkmark to completed subject buttons
+            button.setAlpha(0.6f); //make button slightly faded
             Log.d("DEBUG", subject + "_done = " + done);
 
-            // strike-through
+            // adding a strike-through effect
             button.setPaintFlags(button.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
 
+
+    //opens question screen once subject is selected
     private void openQuestion(String subject){
         SharedPreferences prefs = getSharedPreferences("Quiz2Day", MODE_PRIVATE);
 
-        boolean done = prefs.getBoolean(subject + "_done", false);
+        boolean done = prefs.getBoolean(subject + "_done", false); //checking if subject completed
 
         if (done) {
+            //prevents user from redoing quetsion, by displaying msg
             Toast.makeText(this, "You already completed today's quiz for " + subject, Toast.LENGTH_SHORT).show();
             return;
         }
-
+        // open question screen
         Intent i = new Intent(this, Questions.class);
+
+        //passing through subject and level
         i.putExtra("subject", subject);
         i.putExtra("level", level);
         startActivity(i);
     }
 
+
+    //handles back arrow in top bar
     @Override
     public boolean onSupportNavigateUp(){
         getOnBackPressedDispatcher().onBackPressed();
         return true;
     }
 
+
+    // helps check if all 4 subjects are completed
     private boolean allCompleted(SharedPreferences prefs) {
         return prefs.getBoolean("English_done", false) &&
                 prefs.getBoolean("Math_done", false) &&
