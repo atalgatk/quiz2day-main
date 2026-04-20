@@ -23,8 +23,8 @@ public class Explanation extends AppCompatActivity {
         tvExplanation = findViewById(R.id.tvExplanation);
         btnContinue = findViewById(R.id.btnDone);
 
-        // 1. Retrieve data passed from the Questions activity
-        // These keys ("subject", "answer", "explanation") must match the ones used in Intent.putExtra
+        // retrieve data passed from the Questions activity
+        // these keys ("subject", "answer", "explanation") must match the ones used in Intent.putExtra
         String subject = getIntent().getStringExtra("subject");
         String correctAnswer = getIntent().getStringExtra("answer");
         String explanation = getIntent().getStringExtra("explanation");
@@ -44,15 +44,12 @@ public class Explanation extends AppCompatActivity {
             ProgressManager.setSubjectDone(this, subject);
         }
 
-        // 3. CRITICAL STEP: Mark this subject as completed in the ProgressManager
-        // This ensures the dot on the Home Dashboard turns green
+        // marking subjects as completed in the ProgressManager
+        // this tell us that the dot on the TodayQuiz page turns green
         if (subject != null) {
             ProgressManager.setSubjectDone(this, subject);
         }
 
-        // Handle the Continue button click (bottom)
-        // This takes the user back to the Home Dashboard
-        // Handle the Continue button click (bottom)
         btnContinue.setOnClickListener(v -> {
             //check the progress
             boolean engDone = ProgressManager.isSubjectDone(this, "English");
