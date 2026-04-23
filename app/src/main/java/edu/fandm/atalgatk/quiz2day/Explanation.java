@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//this screen shows the correct answer + explanation
+//after the user answers a question
+
 public class Explanation extends AppCompatActivity {
 
     private TextView tvCorrectAnswer, tvExplanation;
@@ -18,28 +21,31 @@ public class Explanation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explanation);
 
-        // Initialize UI elements from the XML layout
+        //connect java variables to UI elements from XML
         tvCorrectAnswer = findViewById(R.id.tvCorrectAnswer);
         tvExplanation = findViewById(R.id.tvExplanation);
         btnContinue = findViewById(R.id.btnDone);
 
-        // retrieve data passed from the Questions activity
-        // these keys ("subject", "answer", "explanation") must match the ones used in Intent.putExtra
+        //get the data passed from the Questions activity
+        //these keys ("subject", "answer", "explanation") must match the ones used in Intent.putExtra
         String subject = getIntent().getStringExtra("subject");
         String correctAnswer = getIntent().getStringExtra("answer");
         String explanation = getIntent().getStringExtra("explanation");
 
 
 
-        // 2. Display the correct answer and the "Why" explanation
+        //show correct answer
         if (correctAnswer != null) {
             tvCorrectAnswer.setText("Answer = " + correctAnswer);
         }
 
+        // show explanation (the "why")
         if (explanation != null) {
             tvExplanation.setText(explanation);
         }
 
+        // mark this subject as completed
+        // this is what turns the dot green on the main screen
         if (subject != null) {
             ProgressManager.setSubjectDone(this, subject);
         }
