@@ -33,7 +33,7 @@ public class TodayQuiz extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.today_quiz);
 
-        //initialization
+        //connect UI elements
         tvStreak = findViewById(R.id.tvStreak);
         tvUserLevel = findViewById(R.id.tvUserLevel);
         ivStreakIcon = findViewById(R.id.ivStreakIcon);
@@ -44,11 +44,11 @@ public class TodayQuiz extends AppCompatActivity {
         dotScience = findViewById(R.id.dot_science);
         dotSocial = findViewById(R.id.dot_social);
 
-        //switching to SubjectSelection.class
+        //start quiz button - go to subject selection screen
         btnStartQuiz.setOnClickListener(v -> {
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 
-            //get firebase key (for loading correct questions)
+            //this is the Firebase level key used to load questions
             String levelKey = prefs.getString("selected_level_key", "ESL-1");
 
             //move to SubjectSelection.class
@@ -64,10 +64,10 @@ public class TodayQuiz extends AppCompatActivity {
         Button logoutBtn = findViewById(R.id.btnLogout);
 
         logoutBtn.setOnClickListener(v -> {
-            // 1. Sign out from Firebase
+            //sign out from Firebase
             FirebaseAuth.getInstance().signOut();
 
-            // 2. Redirect to Login Activity
+            //send user back to login screen and clear back stack
             Intent intent = new Intent(TodayQuiz.this, Login.class);
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -76,7 +76,6 @@ public class TodayQuiz extends AppCompatActivity {
             finish();
         });
 
-        //ProgressManager.resetDailyProgress(this);
     }
 
     @Override
@@ -133,7 +132,7 @@ public class TodayQuiz extends AppCompatActivity {
             btnStartQuiz.setEnabled(true);
 
 
-            //gray the icon
+            //gray out streak icon when not fully completed
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
             ivStreakIcon.setColorFilter(new ColorMatrixColorFilter(matrix));
@@ -141,11 +140,12 @@ public class TodayQuiz extends AppCompatActivity {
             tvStreak.setTextColor(Color.GRAY);
         }
 
-        //take the actual number of streak from memory
+        //show current streak number
         int streak = StreakManager.getStreak(this);
         tvStreak.setText(String.valueOf(streak));
     }
 
+    //helper function to color dots based on completion
     private void setDotStatus(View dot, boolean isDone) {
         //make dots green if it's done and gray if not
         int color = isDone ? Color.parseColor("#4CAF50") : Color.parseColor("#D1D5DB");

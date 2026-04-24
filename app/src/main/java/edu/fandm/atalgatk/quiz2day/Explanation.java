@@ -39,19 +39,19 @@ public class Explanation extends AppCompatActivity {
             tvCorrectAnswer.setText("Answer = " + correctAnswer);
         }
 
-        // show explanation (the "why")
+        //show explanation (the "why")
         if (explanation != null) {
             tvExplanation.setText(explanation);
         }
 
-        // mark this subject as completed
-        // this is what turns the dot green on the main screen
+        //mark this subject as completed
+        //this is what turns the dot green on the main screen
         if (subject != null) {
             ProgressManager.setSubjectDone(this, subject);
         }
 
-        // marking subjects as completed in the ProgressManager
-        // this tell us that the dot on the TodayQuiz page turns green
+        //marking subjects as completed in the ProgressManager
+        //this tell us that the dot on the TodayQuiz page turns green
         if (subject != null) {
             ProgressManager.setSubjectDone(this, subject);
         }
